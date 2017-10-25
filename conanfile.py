@@ -40,6 +40,13 @@ class RpclibConan(ConanFile):
         compiler = self.settings.compiler
         if compiler == "Visual Studio" and "MT" in str(compiler.runtime):
             self.cmake.definitions["RPCLIB_MSVC_STATIC_RUNTIME"] = "ON"
+        elif compiler in ("gcc", "clang", "apple-clang"):
+            if self.settings.arch == 'x86':
+                self.cmake.definitions["CMAKE_C_FLAGS"] = "-m32"
+                self.cmake.definitions["CMAKE_CXX_FLAGS"] = "-m32"
+            else:
+                self.cmake.definitions["CMAKE_C_FLAGS"] = "-m64"
+                self.cmake.definitions["CMAKE_CXX_FLAGS"] = "-m64"
         self.cmake.build()
 
     def package(self):
