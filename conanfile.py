@@ -37,7 +37,7 @@ class RpclibConan(ConanFile):
     def build(self):
         self.cmake = CMake(self, parallel=True)
         self.cmake.configure(source_dir="rpclib-{0}".format(self.version))
-        compiler = self.settings.compiler
+        compiler = str(self.settings.compiler)
         if compiler == "Visual Studio" and "MT" in str(compiler.runtime):
             self.cmake.definitions["RPCLIB_MSVC_STATIC_RUNTIME"] = "ON"
         elif compiler in ("gcc", "clang", "apple-clang"):
